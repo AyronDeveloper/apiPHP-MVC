@@ -1,0 +1,6 @@
+RewriteEngine on
+
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+
+RewriteRule ^([^/]+)(?:/([^/]+))?(?:/([^/]+))?$ index.php?pp=$1&sp=$2&tp=$3 [QSA,L]
