@@ -11,6 +11,7 @@ class apiController{
 
         if($id==null){
             $comidas=$classComida->allFood();
+
             echo json_encode($comidas, JSON_UNESCAPED_UNICODE);
         }else{
             $classComida->setId($id);
@@ -28,29 +29,47 @@ class apiController{
 
         $create=$classComida->createFood();
 
-        echo json_encode($create);
+        $result=false;
+        if($create) $result=true;
+
+        echo json_encode(["result"=>$result]);
     }
 
     public function actualizarComida($id){
-        $classComida=new Comida();
+        if($_SERVER["REQUEST_METHOD"]=="POST"){
+            $classComida=new Comida();
 
-        $classComida->setId($id);
-        $classComida->setNombre($_POST["nombre"]);
-        $classComida->setImagen($_POST["imagen"]);
-
-        $update=$classComida->updateFood();
-
-        echo json_encode($update);
+            //$data = json_decode(file_get_contents("php://input"), true);
+            //var_dump($data);
+            
+            $classComida->setId($id);
+            $classComida->setNombre($_POST["nombre"]);
+            $classComida->setImagen($_POST["imagen"]);
+    
+            $update=$classComida->updateFood();
+    
+            $result=false;
+            if($update) $result=true;
+    
+            echo json_encode(["result"=>$result]);
+        }
     }
 
     public function eliminarComida($id){
-        $classComida=new Comida();
+        if($_SERVER["REQUEST_METHOD"]=="DELETE"){
+            $classComida=new Comida();
+    
+            $classComida->setId($id);
+    
+            $delete=$classComida->deleteFood();
+    
+            $result=false;
+            if($delete) $result=true;
+    
+            echo json_encode(["result"=>$result]);
+        }else{
 
-        $classComida->setId($id);
-
-        $delete=$classComida->deleteFood();
-
-        echo json_encode($delete);
+        }
     }
 }
 ?>

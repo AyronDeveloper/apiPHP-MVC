@@ -34,7 +34,12 @@ class Comida{
         $query="SELECT * FROM tabla_comida";
         $comidas=$this->db->prepare($query);
         $comidas->execute();
+
         $result=$comidas->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach($result as &$com){
+            $com["imagen"]=URL."uploads/images/".$com["imagen"];
+        }
 
         return $result;
     }
@@ -43,7 +48,10 @@ class Comida{
         $query="SELECT * FROM tabla_comida WHERE id='{$this->getId()}'";
         $comida=$this->db->prepare($query);
         $comida->execute();
+        
         $result=$comida->fetch(PDO::FETCH_ASSOC);
+            
+        $result["imagen"]=URL."uploads/images/".$result["imagen"];
         
         return $result;
     }
