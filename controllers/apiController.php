@@ -25,12 +25,16 @@ class apiController{
         $classComida=new Comida();
 
         $classComida->setNombre($_POST["nombre"]);
-        $classComida->setImagen($_POST["imagen"]);
+        $classComida->setImagen($_FILES["imagen"]["name"]);
+        $imagenTmp=$_FILES["imagen"]["tmp_name"];
 
         $create=$classComida->createFood();
 
         $result=false;
-        if($create) $result=true;
+        if($create){
+            move_uploaded_file($imagenTmp,"uploads/images/".$classComida->getImagen());
+            $result=true;
+        }
 
         echo json_encode(["result"=>$result]);
     }
@@ -44,12 +48,16 @@ class apiController{
             
             $classComida->setId($id);
             $classComida->setNombre($_POST["nombre"]);
-            $classComida->setImagen($_POST["imagen"]);
+            $classComida->setImagen($_FILES["imagen"]["name"]);
+            $imagenTmp=$_FILES["imagen"]["tmp_name"];
     
             $update=$classComida->updateFood();
     
             $result=false;
-            if($update) $result=true;
+            if($update){
+                move_uploaded_file($imagenTmp,"uploads/images/".$classComida->getImagen());
+                $result=true;
+            }
     
             echo json_encode(["result"=>$result]);
         }
